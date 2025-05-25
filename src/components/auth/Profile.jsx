@@ -121,18 +121,7 @@ const Profile = () => {
 
           <Grid item xs={12}>
             <Typography variant="body1">
-              <strong>Роль:</strong> {editing ? (
-                <TextField
-                  fullWidth
-                  name="role"
-                  value={formData.role || ''}
-                  onChange={handleChange}
-                  variant="outlined"
-                  label="Роль"
-                />
-              ) : (
-                userData.role
-              )}
+              <strong>Роль:</strong> {userData.role}
             </Typography>
           </Grid>
 

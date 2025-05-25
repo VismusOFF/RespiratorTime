@@ -96,7 +96,7 @@ const SignUp = () => {
         </Button>
       </Box>
       
-      <Button sx={{ mt: 2 }} onClick={() => navigate('/')} color="primary">Есть аккаунт? Авторизоваться</Button>
+      <Button sx={{ mt: 2 }} onClick={() => navigate('/signIn')} color="primary">Есть аккаунт? Авторизоваться</Button>
       
     </Container>
   );

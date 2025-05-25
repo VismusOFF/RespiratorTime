@@ -1,42 +1,47 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { auth } from '../assets/firebase'; // путь к вашей инициализации Firebase
+import { auth, database } from '../assets/firebase'; // Импортируйте и базу данных
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { ref, onValue } from 'firebase/database'; // Импортируйте необходимые функции из Firebase
 
 const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser ] = useState(null);
-  const [loading, setLoading] = useState(true); // Чтобы знать, когда идет загрузка
-  const navigate = useNavigate(); // Переместите useNavigate сюда
+  const [user, setUser  ] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (firebaseUser ) => {
-      if (firebaseUser ) {
-        setUser (firebaseUser ); // сохраняем объект Firebase User
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser  ) => {
+      if (firebaseUser  ) {
+        // Получаем данные пользователя из базы данных
+        const userRef = ref(database, 'users/' + firebaseUser .uid);
+        onValue(userRef, (snapshot) => {
+          const userData = snapshot.val();
+          if (userData) {
+            setUser ({ ...firebaseUser , ...userData }); // Сохраняем объект Firebase User и данные из базы
+          }
+        });
       } else {
         setUser (null);
       }
       setLoading(false);
     });
 
-    // Очистка подписки при размонтировании
     return () => unsubscribe();
   }, []);
 
-  // Функция для выхода
   const logout = async () => {
     try {
       await signOut(auth);
-      setUser (null); // Обновляем состояние пользователя
+      setUser (null);
       console.log('Пользователь вышел из системы');
-      navigate('/signIn'); // Перенаправление на страницу входа
+      navigate('/signIn');
     } catch (error) {
       console.error('Ошибка при выходе:', error);
     }
   };
 
-  // Пока идет загрузка, можно вернуть null или загрузочный компонент
   if (loading) {
     return <div>Загрузка пользователя...</div>;
   }
