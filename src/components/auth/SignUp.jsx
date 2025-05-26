@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Box, Container, TextField, Button, Typography } from '@mui/material';
+import { Box, Container, TextField, Button, Typography, Link } from '@mui/material';
 import { auth, database } from '../../assets/firebase'; // Убедитесь, что вы импортируете database
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { ref, set } from 'firebase/database'; // Импортируем функции для работы с Realtime Database
-import { useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
@@ -95,6 +95,9 @@ const SignUp = () => {
           Зарегистрироваться
         </Button>
       </Box>
+      <Link onClick={() => navigate('/reset-password')} sx={{ mt: 2, cursor: 'pointer' }}>
+        Забыли пароль?
+      </Link>
       
       <Button sx={{ mt: 2 }} onClick={() => navigate('/signIn')} color="primary">Есть аккаунт? Авторизоваться</Button>
       

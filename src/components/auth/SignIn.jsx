@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Checkbox, Container, TextField, Button, Typography, FormControlLabel } from '@mui/material';
+import { Box, Checkbox, Container, TextField, Button, Typography, FormControlLabel, Link } from '@mui/material';
 import { auth } from '../../assets/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
@@ -96,6 +96,9 @@ const SignIn = () => {
           Войти
         </Button>
       </Box>
+      <Link onClick={() => navigate('/reset-password')} sx={{ mt: 2, cursor: 'pointer' }}>
+        Забыли пароль?
+      </Link>
       <Button onClick={() => navigate('/signup')} sx={{ mt: 2 }}>
         Нет аккаунта? Зарегистрироваться
       </Button>
